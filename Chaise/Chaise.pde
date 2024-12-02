@@ -1,89 +1,126 @@
-public class Chaise extends PShape {
-    private float longueur; 
-    private float largeur; 
-    private float hauteur;
+public class Chaise {
 
-    public Chaise (float longueur, float largeur, float hauteur) {
-        this.longueur = longueur;
-        this.largeur = largeur; 
-        this.hauteur = hauteur;
-        init(longueur, largeur, hauteur) 
+    private color[] couleurs;
+    private PShape chaiseShape; // Le PShape pour représenter la chaise
+
+    // Constructeur
+    public Chaise() {
+        // Stocker les couleurs passées en paramètre
+        this.chaiseShape = init(); // Initialiser et construire la chaise
     }
-    
-    private PShape init(float longueur, float largeur, float hauteur){
-        PShape cube = createShape(GROUP);
+
+    // Méthode pour initialiser et construire la forme de la chaise
+    private PShape init() {
+        // Création des groupes pour la chaise
+        PShape chaise = createShape(GROUP); // Créer un groupe pour le cube
+        PShape pieds = createShape(GROUP); 
+
+        // Création des élément de la chaise 
+        PShape composant1 = monCube(250,50,250);//partie de la chaise où l'on s'assoie
+        PShape dossier = monCube(50,250,250);
+        // création des 4 pieds de la chaise
+        PShape pied1 = monCube(50,250,50); 
+        PShape pied2 = monCube(50,250,50); 
+        PShape pied3 = monCube(50,250,50); 
+        PShape pied4 = monCube(50,250,50);
+
+        //Transformation sur le dossier
+        dossier.translate(250/2,-100); 
+        //Transformation sur les 4 pieds
+        pied1.translate(-100,250/2,100);//pied haut-droite
+        pied2.translate(-100,250/2,-100);//pied haut gauche
+        pied3.translate(100,250/2,100);//pied bas-droit
+        pied4.translate(100,250/2,-100);//pied bas-gauche
+        
+        pieds.addChild(pied1);
+        pieds.addChild(pied2);
+        pieds.addChild(pied3);
+        pieds.addChild(pied4);
+
+        chaise.addChild(composant1); 
+        chaise.addChild(dossier);
+        chaise.addChild(pieds);          
+        
+        return chaise;
+    }
+
+    // Méthode pour accéder à la forme
+    public PShape getShape() {
+        return this.chaiseShape;
+    }
+
+    private PShape monCube(float longueur, float hauteur, float largeur){
+         PShape cube = createShape(GROUP); // Créer un groupe pour le cube
         float x = longueur / 2;
-        float y = largeur / 2;
-        float z = hauteur / 2;
+        float y = hauteur / 2;
+        float z = largeur / 2;
 
         // Face gauche
         PShape face1 = createShape();
         face1.beginShape(QUADS);
-        face1.fill(couleurs[0]); // Couleur rouge par défaut
+        //face1.fill(couleurs[0]); // Couleur rouge
         face1.vertex(-x, -y, -z);
         face1.vertex(-x, -y, z);
         face1.vertex(-x, y, z);
         face1.vertex(-x, y, -z);
         face1.endShape();
+        cube.addChild(face1); // Ajouter la face au groupe
 
         // Face droite
         PShape face2 = createShape();
         face2.beginShape(QUADS);
-        face2.fill(couleurs[1]); // Couleur verte par défaut
+        //face2.fill(couleurs[1]); // Couleur verte
         face2.vertex(x, -y, -z);
         face2.vertex(x, -y, z);
         face2.vertex(x, y, z);
         face2.vertex(x, y, -z);
         face2.endShape();
+        cube.addChild(face2);
 
         // Face bas
         PShape face3 = createShape();
         face3.beginShape(QUADS);
-        face3.fill(couleurs[2]); // Couleur bleue par défaut
+        //face3.fill(couleurs[2]); // Couleur bleue
         face3.vertex(-x, y, -z);
         face3.vertex(x, y, -z);
         face3.vertex(x, y, z);
         face3.vertex(-x, y, z);
         face3.endShape();
+        cube.addChild(face3);
 
         // Face haut
         PShape face4 = createShape();
         face4.beginShape(QUADS);
-        face4.fill(couleurs[3]); // Couleur jaune par défaut
+        //face4.fill(couleurs[3]); // Couleur jaune
         face4.vertex(-x, -y, -z);
         face4.vertex(-x, -y, z);
         face4.vertex(x, -y, z);
         face4.vertex(x, -y, -z);
         face4.endShape();
+        cube.addChild(face4);
 
         // Face devant
         PShape face5 = createShape();
         face5.beginShape(QUADS);
-        face5.fill(couleurs[4]); // Couleur magenta par défaut
+        //face5.fill(couleurs[4]); // Couleur magenta
         face5.vertex(-x, -y, z);
         face5.vertex(x, -y, z);
         face5.vertex(x, y, z);
         face5.vertex(-x, y, z);
         face5.endShape();
+        cube.addChild(face5);
 
         // Face derrière
         PShape face6 = createShape();
         face6.beginShape(QUADS);
-        face6.fill(couleurs[5]); // Couleur cyan par défaut
+        //face6.fill(couleurs[5]); // Couleur cyan
         face6.vertex(-x, -y, -z);
         face6.vertex(x, -y, -z);
         face6.vertex(x, y, -z);
         face6.vertex(-x, y, -z);
         face6.endShape();
-
-        // Ajout des faces au groupe
-        cube.addChild(face1);
-        cube.addChild(face2);
-        cube.addChild(face3);
-        cube.addChild(face4);
-        cube.addChild(face5);
         cube.addChild(face6);
-        //cube.scale(970, 250, 600);
+
         return cube;
     }
 }

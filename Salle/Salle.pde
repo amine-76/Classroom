@@ -3,12 +3,13 @@ PShape salle; // Déclaration de la variable pour la boîte
 float camX = 0;
 float camY = 0;
 float camZ = 0;
-float rayon = 40; // Rayon pour la caméra
+float rayon = 425; // Rayon pour la caméra
 float phi = 0;
 float theta = 0;
 float longueur = 970;// 9.785m
 float largeur = 600; // 6 m 
 float hauteur = 450;
+PImage tex_porte;
 
 color[] couleurs = {
   color(255, 0, 0),    // Rouge
@@ -21,7 +22,8 @@ color[] couleurs = {
 
 void setup() {
   size(600, 600, P3D);
-  salle = maSalle(longueur, hauteur, largeur, couleurs); // Création de la boîte paramétrée
+  salle = maSalle(largeur, hauteur, longueur, couleurs); // Création de la boîte paramétrée
+  tex_porte = loadImage("Texture/texture_porte.jpg");
   float fov = PI/3;
   float cameraZ = (height/2.0) / tan(fov/2.0);
   perspective(fov, float(width)/float(height), 10, 1500);
@@ -36,7 +38,7 @@ void draw() {
   shape(salle); // Afficher la boîte
 }
 
-PShape maSalle(float l, float L, float P, color[] couleurs) {
+PShape maSalle(float l, float L, float P, color[] couleurs) { 
   PShape cube = createShape(GROUP);
   float x = l / 2;
   float y = L / 2;
@@ -45,7 +47,7 @@ PShape maSalle(float l, float L, float P, color[] couleurs) {
   // Face gauche
   PShape face1 = createShape();
   face1.beginShape(QUADS);
-  face1.fill(couleurs[0]); // Couleur rouge par défaut
+  //face1.fill(couleurs[0]); // Couleur rouge par défaut
   face1.vertex(-x, -y, -z);
   face1.vertex(-x, -y, z);
   face1.vertex(-x, y, z);
@@ -55,17 +57,23 @@ PShape maSalle(float l, float L, float P, color[] couleurs) {
   // Face droite
   PShape face2 = createShape();
   face2.beginShape(QUADS);
-  face2.fill(couleurs[1]); // Couleur verte par défaut
-  face2.vertex(x, -y, -z);
-  face2.vertex(x, -y, z);
-  face2.vertex(x, y, z);
-  face2.vertex(x, y, -z);
+  face2.textureMode(NORMAL);
+  face2.texture(tex_porte); // Applique la texture sur cette face
+  face2.shininess(200.0);
+
+  // Définition des sommets avec coordonnées UV pour mapper une partie de la texture
+  face2.vertex(x, -y, -z, 0.15, 0.75); // Coin supérieur gauche de la porte
+  face2.vertex(x, -y, z, 0.25, 0.75);  // Coin supérieur droit de la porte
+  face2.vertex(x, y, z, 0.25, 0.95);   // Coin inférieur droit de la porte
+  face2.vertex(x, y, -z, 0.15, 0.95);  // Coin inférieur gauche de la porte
+
   face2.endShape();
+
 
   // Face bas
   PShape face3 = createShape();
   face3.beginShape(QUADS);
-  face3.fill(couleurs[2]); // Couleur bleue par défaut
+  //face3.fill(couleurs[2]); // Couleur bleue par défaut
   face3.vertex(-x, y, -z);
   face3.vertex(x, y, -z);
   face3.vertex(x, y, z);
@@ -75,7 +83,7 @@ PShape maSalle(float l, float L, float P, color[] couleurs) {
   // Face haut
   PShape face4 = createShape();
   face4.beginShape(QUADS);
-  face4.fill(couleurs[3]); // Couleur jaune par défaut
+  //face4.fill(couleurs[3]); // Couleur jaune par défaut
   face4.vertex(-x, -y, -z);
   face4.vertex(-x, -y, z);
   face4.vertex(x, -y, z);
@@ -95,7 +103,7 @@ PShape maSalle(float l, float L, float P, color[] couleurs) {
   // Face derrière
   PShape face6 = createShape();
   face6.beginShape(QUADS);
-  face6.fill(couleurs[5]); // Couleur cyan par défaut
+  //face6.fill(couleurs[5]); // Couleur cyan par défaut
   face6.vertex(-x, -y, -z);
   face6.vertex(x, -y, -z);
   face6.vertex(x, y, -z);

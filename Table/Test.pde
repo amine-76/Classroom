@@ -3,7 +3,7 @@ float angle = 0f;
 float camX = 0;
 float camY = 0;
 float camZ = 0;
-float rayon = 400; // Rayon pour la caméra
+float rayon = 800; // Rayon pour la caméra
 float phi = 0;
 float theta = 0;
 float longueur = 970;// 9.785m
@@ -30,11 +30,8 @@ void setup() {
 void draw() {
   background(0);
   lights();
-  //bougerCamera(); 
-  //camera(camX, camY, camZ, 0,0,0,0,1,0); 
-  translate(width / 2, height / 2);
-   rotateX(frameCount * 0.01);
-   rotateY(frameCount * 0.01);
+  bougerCamera(); 
+  camera(camX, camY, camZ, 0,0,0,0,1,0); 
 
   // Dessiner la chaise
   shape(table.getShape());

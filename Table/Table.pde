@@ -7,26 +7,32 @@ public class Table  {
 
   public PShape init(){
       PShape table = createShape(GROUP);
-      PShape pieds = createShape(GROUP);
+      //PShape pieds = createShape(GROUP);
 
-      PShape pied1 = monCube(50,250,50); 
-      PShape pied2 = monCube(50,250,50); 
-      PShape pied3 = monCube(50,250,50); 
-      PShape pied4 = monCube(50,250,50);
-      PShape surface = monCube(250,50,250);
+      // PShape pied1 = monCube(50,250,50); 
+      // PShape pied2 = monCube(50,250,50); 
+      // PShape pied3 = monCube(50,250,50); 
+      // PShape pied4 = monCube(50,250,50);
+      PShape surface = monCube(250,25,310);
+      PShape partiedroite = monCube(250,250,25); 
+      PShape partieGauche = monCube(250,250,25);
+      
+      partiedroite.translate(0,250/2,250/2); 
+      partieGauche.translate(0,250/2,-250/2); 
+      // pied1.translate(-100,250/2,100);//pied haut-droite
+      // pied2.translate(-100,250/2,-100);//pied haut gauche
+      // pied3.translate(100,250/2,100);//pied bas-droit
+      // pied4.translate(100,250/2,-100);//pied bas-gauche
 
-      pied1.translate(-100,250/2,100);//pied haut-droite
-      pied2.translate(-100,250/2,-100);//pied haut gauche
-      pied3.translate(100,250/2,100);//pied bas-droit
-      pied4.translate(100,250/2,-100);//pied bas-gauche
+      // pieds.addChild(pied1);  
+      // pieds.addChild(pied2);  
+      // pieds.addChild(pied3);  
+      // pieds.addChild(pied4);
 
-      pieds.addChild(pied1);  
-      pieds.addChild(pied2);  
-      pieds.addChild(pied3);  
-      pieds.addChild(pied4);
-
-      table.addChild(pieds);
-      table.addChild(surface); 
+      //table.addChild(pieds);
+      table.addChild(surface);
+      table.addChild(partiedroite);
+      table.addChild(partieGauche);  
 
       return table;    
   }

@@ -10,39 +10,43 @@ public class Chaise {
     }
 
     // Méthode pour initialiser et construire la forme de la chaise
-    private PShape init() {
-        // Création des groupes pour la chaise
-        PShape chaise = createShape(GROUP); // Créer un groupe pour le cube
-        PShape pieds = createShape(GROUP); 
+private PShape init() {
+    // Création des groupes pour la chaise
+    PShape chaise = createShape(GROUP); // Créer un groupe pour la chaise
+    PShape pieds = createShape(GROUP);  // Créer un groupe pour les pieds
 
-        // Création des élément de la chaise 
-        PShape composant1 = monCube(250,50,250);//partie de la chaise où l'on s'assoie
-        PShape dossier = monCube(50,250,250);
-        // création des 4 pieds de la chaise
-        PShape pied1 = monCube(50,250,50); 
-        PShape pied2 = monCube(50,250,50); 
-        PShape pied3 = monCube(50,250,50); 
-        PShape pied4 = monCube(50,250,50);
+    // Création des éléments de la chaise 
+    PShape composant1 = monCube(250, 50, 250); // Partie de la chaise où l'on s'assoie
+    PShape dossier = monCube(50, 250, 250);   // Dossier de la chaise
 
-        //Transformation sur le dossier
-        dossier.translate(250/2,-100); 
-        //Transformation sur les 4 pieds
-        pied1.translate(-100,250/2,100);//pied haut-droite
-        pied2.translate(-100,250/2,-100);//pied haut gauche
-        pied3.translate(100,250/2,100);//pied bas-droit
-        pied4.translate(100,250/2,-100);//pied bas-gauche
-        
-        pieds.addChild(pied1);
-        pieds.addChild(pied2);
-        pieds.addChild(pied3);
-        pieds.addChild(pied4);
+    // Création des pieds de la chaise (en utilisant un tableau)
+    PShape[] tabPieds = new PShape[4];  // Créer un tableau pour les 4 pieds
 
-        chaise.addChild(composant1); 
-        chaise.addChild(dossier);
-        chaise.addChild(pieds);          
-        
-        return chaise;
+    for (int i = 0; i < tabPieds.length; ++i) {
+        tabPieds[i] = monCube(50, 190, 50);  // Créer un cube pour chaque pied
     }
+
+    // Transformation sur le dossier
+    dossier.translate(100, -125, 0);  // Positionner le dossier en hauteur et centré
+
+    // Transformation sur les 4 pieds
+    tabPieds[0].translate(-100, 95, 100); // Pied haut-droite
+    tabPieds[1].translate(-100, 95, -100); // Pied haut-gauche
+    tabPieds[2].translate(100, 95, 100);  // Pied bas-droit
+    tabPieds[3].translate(100, 95, -100); // Pied bas-gauche
+
+    // Ajouter les pieds au groupe
+    for (PShape pied : tabPieds) {
+        pieds.addChild(pied);  // Ajouter chaque pied au groupe
+    }
+
+    // Ajouter tous les composants à la chaise
+    chaise.addChild(composant1);  // Ajouter la base de la chaise
+    chaise.addChild(dossier);     // Ajouter le dossier
+    chaise.addChild(pieds);       // Ajouter les pieds
+
+    return chaise;  // Retourner la forme complète de la chaise
+}
 
     // Méthode pour accéder à la forme
     public PShape getShape() {

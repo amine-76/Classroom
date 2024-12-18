@@ -4,7 +4,7 @@ PShape salle; // Déclaration de la variable pour la boîte
 float camX = 0;
 float camY = 0;
 float camZ = 0;
-float rayon = 400; // Rayon pour la caméra
+float rayon = 600; // Rayon pour la caméra
 float phi = 0;
 float theta = 0;
 float longueur = 970;// 9.785m
@@ -31,14 +31,12 @@ void setup() {
 void draw() {
   background(0);
   lights();
-  //bougerCamera(); 
-  //camera(camX, camY, camZ, 0,0,0,0,1,0); 
-  translate(width / 2, height / 2);
-   rotateX(frameCount * 0.01);
-   rotateY(frameCount * 0.01);
-
+  bougerCamera(); 
+  camera(camX, camY, camZ, 0,0,0,0,1,0); 
+  //translate(width / 2, height / 2);
   // Dessiner la chaise
   shape(chaise.getShape());
+  drawRepere(); 
 }
 
 void bougerCamera() {
@@ -51,3 +49,22 @@ void bougerCamera() {
   camZ = rayon * cos(phi) * cos(theta);
 }
  
+// Fonction pour dessiner le repère
+void drawRepere() {
+  strokeWeight(3);
+
+  // Axe X en rouge
+  stroke(255, 0, 0);
+  line(0, 0, 0, 200, 0, 0);
+
+  // Axe Y en vert
+  stroke(0, 255, 0);
+  line(0, 0, 0, 0, 200, 0);
+
+  // Axe Z en bleu
+  stroke(0, 0, 255);
+  line(0, 0, 0, 0, 0, 200);
+
+  // Remet la couleur à l'état initial
+  noStroke();
+} 

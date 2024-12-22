@@ -28,13 +28,14 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(255);
   lights();
   bougerCamera(); 
   camera(camX, camY, camZ, 0,0,0,0,1,0); 
 
   // Dessiner la chaise
   shape(table.getShape());
+  drawRepere(); 
 }
 
 void bougerCamera() {
@@ -46,4 +47,23 @@ void bougerCamera() {
   camY = rayon * sin(phi);
   camZ = rayon * cos(phi) * cos(theta);
 }
- 
+
+// Fonction pour dessiner le repère
+void drawRepere() {
+  strokeWeight(3);
+
+  // Axe X en rouge
+  stroke(255, 0, 0);
+  line(0, 0, 0, 200, 0, 0);
+
+  // Axe Y en vert
+  stroke(0, 255, 0);
+  line(0, 0, 0, 0, 200, 0);
+
+  // Axe Z en bleu
+  stroke(0, 0, 255);
+  line(0, 0, 0, 0, 0, 200);
+
+  // Remet la couleur à l'état initial
+  noStroke();
+} 

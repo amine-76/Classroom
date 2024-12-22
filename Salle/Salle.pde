@@ -9,6 +9,8 @@ float theta = 0;
 float longueur = 9700;// 9.785m
 float largeur = 6000; // 6 m 
 float hauteur = 2500;
+float cameraSpeed = 10; // Vitesse de déplacement de la caméra
+
 //Texture
 PImage tex_porte;
 PImage tex_wall;

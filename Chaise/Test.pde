@@ -29,7 +29,7 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(255);
   lights();
   bougerCamera(); 
   camera(camX, camY, camZ, 0,0,0,0,1,0); 

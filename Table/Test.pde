@@ -1,3 +1,4 @@
+PShader lightShader ; 
 Table table;
 float angle = 0f;
 float camX = 0;
@@ -9,9 +10,19 @@ float theta = 0;
 float longueur = 970;// 9.785m
 float largeur = 600; // 6 m 
 float hauteur = 450;
+PVector[] lightPos = { 
+  new PVector(300, -300, 300)
+};
+
+PVector[] lightColor = {
+  new PVector(255, 255, 255)
+};
+
 
 void setup() {
   size(800, 800, P3D);
+  lightShader = loadShader("Lambert1DiffuseFrag.glsl","Lambert1DiffuseVert.glsl");   
+
 
   // Couleurs pour les faces
   color[] couleurs = {
@@ -29,7 +40,7 @@ void setup() {
 
 void draw() {
   background(255);
-  lights();
+  shader(lightShader);
   bougerCamera(); 
   camera(camX, camY, camZ, 0,0,0,0,1,0); 
 

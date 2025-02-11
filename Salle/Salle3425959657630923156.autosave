@@ -35,7 +35,6 @@ PImage tex_fenetre;
 //Shader 
 PShader colorShader;
 PShader lightShader;  
-PShader lightShaderTex;  
 
 //Position des lumières 
 PVector[] lightPos = { 
@@ -81,7 +80,6 @@ void setup() {
   maTele = tele.getShape();
   colorShader = loadShader("ColorShaderFrag.glsl","ColorShaderVert.glsl");
   lightShader = loadShader("Lambert1DiffuseFrag.glsl","Lambert1DiffuseVert.glsl");   
-  lightShaderTex = loadShader("LightShaderTexFrag.glsl","LightShaderTexVert.glsl");   
   //Tables 
     groupeTables = createShape(GROUP); 
       float espacementZ = 700;
@@ -206,7 +204,7 @@ void draw() {
   float espacementX = 800; // Espacement horizontal
   float espacementZ = 1000; // Espacement en profondeur
   //shader(colorShader);
-  shader(lightShaderTex); 
+  shader(lightShader); 
 
   // Première rangée de lumières (côté gauche)
   for (int i = 0; i < 4; i++) {
@@ -233,7 +231,6 @@ void draw() {
   }
   resetShader(); 
   popMatrix();
-
 
 
 
@@ -298,10 +295,10 @@ PShape maSalle(float l, float L, float P, color[] couleurs) {
   // Face bas
   PShape face3 = createShape();
   face3.beginShape(QUADS);
-   //face3.fill(couleurs[2]); // Couleur bleue par défaut
+  face3.fill(couleurs[2]); // Couleur bleue par défaut
   face3.textureMode(NORMAL);
   println(tex_wall);
-  face3.texture(tex_wall); // Applique la texture sur cette face
+  face3.texture(null); // Applique la texture sur cette face
   face3.shininess(200.0);
 
   face3.vertex(-x, y, -z,0,0);

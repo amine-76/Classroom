@@ -1,63 +1,44 @@
-public class Chaise {
+public class tableFond  {
 
-    private color[] couleurs;
-    private PShape chaiseShape; // Le PShape pour représenter la chaise
-    PImage texture_pied; 
-    PImage texture_chaise; 
+   private PShape table; 
+    private PImage texture_surface; 
+    private PImage texture_noire;
 
-    // Constructeur
-    public Chaise() {
-        // Stocker les couleurs passées en paramètre
-        texture_pied = loadImage("texture_pied.jpg");
-        texture_chaise = loadImage("texture_chaise.jpg"); 
-        this.chaiseShape = init(); // Initialiser et construire la chaise
-    }
+    
+  public tableFond() {
+    texture_surface = loadImage("texture_surface_table.jpg");
+    texture_noire = loadImage("texture_noire.jpg"); 
+    this.table = init(); 
+  }
 
-    // Méthode pour initialiser et construire la forme de la chaise
-private PShape init() {
-    // Création des groupes pour la chaise
-    PShape chaise = createShape(GROUP); // Créer un groupe pour la chaise
-    PShape pieds = createShape(GROUP);  // Créer un groupe pour les pieds
+  public PShape init(){
+      PShape table = createShape(GROUP);
+      //PShape pieds = createShape(GROUP);
 
-    // Création des éléments de la chaise 
-    PShape composant1 = monCube(250, 25, 250,texture_chaise); // Partie de la chaise où l'on s'assoie
-    PShape dossier = monCube(250, 250, 25,texture_chaise);   // Dossier de la chaise
+      PShape surface = monCube(500,25,250,texture_surface);
+      PShape partiedroite = monCube(25,250,250,texture_noire); 
+      PShape partieGauche = monCube(25,250,250,texture_noire);
+      PShape partieface = monCube(500,250,25,texture_noire);
+      
+      partiedroite.translate(500/2,250/2,0); 
+      partieGauche.translate(-500/2,250/2,0);
+      partieface.translate(0,125,250/2); 
+      
 
-    // Création des pieds de la chaise (en utilisant un tableau)
-    PShape[] tabPieds = new PShape[4];  // Créer un tableau pour les 4 pieds
+      table.addChild(surface);
+      table.addChild(partiedroite);
+      table.addChild(partieGauche);  
+      table.addChild(partieface); 
 
-    for (int i = 0; i < tabPieds.length; ++i) {
-        tabPieds[i] = monCube(15, 240, 15,texture_pied);  // Créer un cube pour chaque pied
-    }
-
-    // Transformation sur le dossier
-    dossier.translate(0, -125, -115);  // Positionner le dossier en hauteur et centré
-
-    // Transformation sur les 4 pieds
-    tabPieds[0].translate(-100, 130, 100); 
-    tabPieds[1].translate(-100, 130, -100); 
-    tabPieds[2].translate(100, 130, 100);  
-    tabPieds[3].translate(100, 130, -100); 
-
-    // Ajouter les pieds au groupe
-    for (PShape pied : tabPieds) {
-        pieds.addChild(pied);  // Ajouter chaque pied au groupe
-    }
-
-    // Ajouter tous les composants à la chaise
-    chaise.addChild(composant1);  // Ajouter la base de la chaise
-    chaise.addChild(dossier);     // Ajouter le dossier
-    chaise.addChild(pieds);       // Ajouter les pieds
-
-    return chaise;  // Retourner la forme complète de la chaise
-}
-
-    // Méthode pour accéder à la forme
+      return table;    
+  }
+      // Méthode pour accéder à la forme
     public PShape getShape() {
-        return this.chaiseShape;
+        return this.table;
     }
 
-    private PShape monCube(float longueur, float hauteur, float largeur,PImage texture){
+
+   private PShape monCube(float longueur, float hauteur, float largeur,PImage texture){
          PShape cube = createShape(GROUP); // Créer un groupe pour le cube
         float x = longueur / 2;
         float y = hauteur / 2;

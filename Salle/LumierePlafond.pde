@@ -1,55 +1,28 @@
-public class Tele {
-    PImage texture_ecran; 
-    PImage texture_tele; 
-    PShape tele; 
-    
-      
+public class LumierePlafond {
+    private PShape lampeShape;
+    private PVector position;
+    private PImage textureLumiere;
 
-    public Tele () {
-        texture_tele = loadImage("texture_tele.jpg");
-        texture_ecran = loadImage("texture_ecran.png"); 
-        tele = init();  
+    // Constructeur
+    public LumierePlafond(float x, float y, float z, PImage texture) {
+        this.position = new PVector(x, y, z);
+        this.textureLumiere = texture;
+        this.lampeShape = init();
     }
 
-    PShape init(){
-        PShape tele = createShape(GROUP); 
-        
-        //composant de la télé 
-        PShape partieEcran = monCube(700,400,20,texture_tele); 
-        PShape pied = monCube(300,50,200,texture_tele);  
-        PShape composant1 = monCube(50,500,30,texture_tele);
-        // face pour l'écran 
-            // Face pour l'écran (rectangulaire)
-            PShape ecran = createShape();
-            ecran.beginShape(QUADS);
-            float largeurEcran = -600; // Largeur de l'écran
-            float hauteurEcran = 300; // Hauteur de l'écran
-            // ecran.textureMode(NORMAL); // Mode de texture
-            // ecran.texture(texture_ecran); // Appliquer la texture
-           
-
-            // Sommets texturés pour l'écran (face avant)
-            ecran.vertex(-largeurEcran / 2, -hauteurEcran / 2, 20, 0, 0); // Coin supérieur gauche
-            ecran.vertex(largeurEcran / 2, -hauteurEcran / 2, 20, 1, 0);  // Coin supérieur droit
-            ecran.vertex(largeurEcran / 2, hauteurEcran / 2, 20, 1, 1);   // Coin inférieur droit
-            ecran.vertex(-largeurEcran / 2 , hauteurEcran / 2, 20, 0, 1);  // Coin inférieur gauche
-            ecran.endShape();
-        //transformation
-        composant1.translate(0, 250, 30);
-        pied.translate(0, 500,0);
-        ecran.translate(0, 0, -30);
-        //ecran.rotateY(HALF_PI); 
-
-        // ajoute dans le groupe 
-        tele.addChild(partieEcran); 
-        tele.addChild(composant1); 
-        tele.addChild(pied);
-        tele.addChild(ecran);
-        //tele.scale(longueur,hauteur,largeur); 
-
-        return tele; 
+    // Initialisation de la forme de la lampe
+    private PShape init() {
+        PShape lampe = createShape(GROUP);
+        PShape base = monCube(1700, 100, 200, textureLumiere); // Cube aplati
+        base.translate(position.x, position.y, position.z);
+        lampe.addChild(base);
+        return lampe;
     }
 
+    // Afficher la lampe
+    public void afficher() {
+        shape(lampeShape);
+    }
 
     private PShape monCube(float longueur, float hauteur, float largeur,PImage texture){
          PShape cube = createShape(GROUP); // Créer un groupe pour le cube
@@ -143,7 +116,5 @@ public class Tele {
 
         return cube;
     }
-    PShape getShape(){
-        return this.tele; 
-    }
+
 }

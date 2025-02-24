@@ -7,7 +7,7 @@ public class Tele {
 
     public Tele () {
         texture_tele = loadImage("texture_tele.jpg");
-        texture_ecran = loadImage("texture_ecran.png"); 
+        texture_ecran = loadImage("texture_ecran.jpg"); 
         tele = init();  
     }
 
@@ -22,17 +22,17 @@ public class Tele {
             // Face pour l'écran (rectangulaire)
             PShape ecran = createShape();
             ecran.beginShape(QUADS);
-            float largeurEcran = -600; // Largeur de l'écran
-            float hauteurEcran = 300; // Hauteur de l'écran
-            // ecran.textureMode(NORMAL); // Mode de texture
-            // ecran.texture(texture_ecran); // Appliquer la texture
+            float largeurEcran = -500; // Largeur de l'écran
+            float hauteurEcran = 400; // Hauteur de l'écran
+            ecran.textureMode(NORMAL); // Mode de texture
+            ecran.texture(texture_ecran); // Appliquer la texture
            
 
             // Sommets texturés pour l'écran (face avant)
-            ecran.vertex(-largeurEcran / 2, -hauteurEcran / 2, 20, 0, 0); // Coin supérieur gauche
-            ecran.vertex(largeurEcran / 2, -hauteurEcran / 2, 20, 1, 0);  // Coin supérieur droit
-            ecran.vertex(largeurEcran / 2, hauteurEcran / 2, 20, 1, 1);   // Coin inférieur droit
-            ecran.vertex(-largeurEcran / 2 , hauteurEcran / 2, 20, 0, 1);  // Coin inférieur gauche
+            ecran.vertex(-largeurEcran / 2, -hauteurEcran / 2, 19, 0, 0); // Coin supérieur gauche
+            ecran.vertex(largeurEcran / 2, -hauteurEcran / 2, 19, 1, 0);  // Coin supérieur droit
+            ecran.vertex(largeurEcran / 2, hauteurEcran / 2, 19, 1, 1);   // Coin inférieur droit
+            ecran.vertex(-largeurEcran / 2 , hauteurEcran / 2, 19, 0, 1);  // Coin inférieur gauche
             ecran.endShape();
         //transformation
         composant1.translate(0, 250, 30);

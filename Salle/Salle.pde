@@ -49,7 +49,7 @@ float rayonLumiere = 100; // Distance du centre pour la lumière
 
 float speed = 20;
 
-boolean allume = false;
+boolean allume = true;
 
 
 color[] couleurs = {
@@ -163,7 +163,7 @@ void setup() {
 
   float fov = PI/3;
   float cameraZ = (height/2.0) / tan(fov/2.0);
-  perspective(fov, float(width)/float(height), 10, cameraZ);
+  perspective(fov, float(width)/float(height), 10, 200000);
 }
 
 void draw() {
@@ -186,6 +186,13 @@ void draw() {
 
   shader(lightShaderTex);
   //pointLight(255, 255, 255, lightPos[0].x, lightPos[0].y, lightPos[0].z);
+    // Si allumer est vrai, on allume les lumières
+  if (allume) {
+    for (int i = 0; i < lightPos.length; i++) {
+      pointLight(255, 255, 255, lightPos[i].x, lightPos[i].y, lightPos[i].z);
+    }
+  }
+
   specular(255, 255, 255); // Reflet blanc pour la brillance
   shininess(255);           // Concentration du reflet
   ambientLight(50, 50, 50);
@@ -203,7 +210,7 @@ void draw() {
   translate(largeur / 2 - 1200, hauteur / 2 - 1400, longueur/2-2000); // Translation vers la position de la télé
   rotateY(PI/3);
   scale(2.6);
-  shader(colorShader);
+  //shader(colorShader);
   shape(maTele); // télé arc en ciel : shader du cours utiliser sur le modèle de couleur
   resetShader();
   popMatrix();
@@ -216,12 +223,6 @@ void draw() {
 
   lampe.afficher();
 
-  // Si allumer est vrai, on allume les lumières
-  if (allume) {
-    for (int i = 0; i < lightPos.length; i++) {
-      pointLight(255, 255, 255, lightPos[i].x, lightPos[i].y, lightPos[i].z);
-    }
-  }
 
 
   // Table de fond
@@ -537,10 +538,4 @@ void drawRepere() {
 
   // Remet la couleur à l'état initial
   noStroke();
-}
-
-void keyPressed() {
-  if (key == 'a' || key == 'A') {
-    allume = !allume; // Change l’état (allume/éteint)
-  }
 }

@@ -4,13 +4,17 @@ public class Table {
   private PImage texture_noire;
   private PImage texture_clavier;
   private PImage texture_ecran;
+   private boolean isScreenVisible = true;
+   
+  private float screenY;
 
   public Table() {
     texture_surface = loadImage("texture_surface_table.jpg");
     texture_noire = loadImage("texture_noire.jpg");
-    texture_clavier = loadImage("texture_clavier.jpg"); // Texture pour le clavier
+    texture_clavier = loadImage("texture_clavier.png"); // Texture pour le clavier
     //texture_souris = loadImage("texture_souris.jpg");   // Texture pour la souris
     texture_ecran = loadImage("texture_ecran.jpg");     // Texture pour l'écran
+    this.screenY = -90;
     this.table = init();
   }
 
@@ -148,13 +152,13 @@ public class Table {
         face.vertex(-x, y, z, 0, 1);
         break;
       case 3: // Face haut
-        face.normal(-1, -1, 0);
+        face.normal(0, 1, 0);
         face.vertex(-x, -y, -z, 0, 0);
-        face.normal(-1, -1, 0);
+        face.normal(0, 1, 0);
         face.vertex(-x, -y, z, 1, 0);
-        face.normal(1, -1, 0);
+        face.normal(0, 1, 0);
         face.vertex(x, -y, z, 1, 1);
-        face.normal(1, -1, 0);
+        face.normal(0, 1, 0);
         face.vertex(x, -y, -z, 0, 1);
         break;
       case 4: // Face devant
@@ -182,5 +186,9 @@ public class Table {
       cube.addChild(face);
     }
     return cube;
+  }
+  
+    public void toggleScreen() {
+    isScreenVisible = !isScreenVisible;
   }
 }

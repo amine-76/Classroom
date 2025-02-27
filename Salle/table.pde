@@ -1,5 +1,9 @@
 public class Table {
   private PShape table;
+  private PShape ecran;
+  private PShape ecranAcc;
+  private PShape partieHaut;
+  private PShape supportHaut; 
   private PImage texture_surface;
   private PImage texture_noire;
   private PImage texture_clavier;
@@ -7,6 +11,8 @@ public class Table {
    private boolean isScreenVisible = true;
    
   private float screenY;
+  private float screenGroupY = -90;
+
 
   public Table() {
     texture_surface = loadImage("texture_surface_table.jpg");
@@ -47,17 +53,17 @@ public class Table {
     // Création et ajout de la souris
     PShape souris = monCube(15, 10, 30, texture_noire);
     souris.setFill(color(0));
-    souris.translate(-95, -10, -40); // Position sur la surface à droite du clavier
+    souris.translate(-110, -10, -40); // Position sur la surface à droite du clavier
     table.addChild(souris);
 
-    // Création et ajout de l'écran
-    PShape ecran = monCube(200, 100, 15, texture_noire); // Écran mince et vertical
-    ecran.setFill(color(0)); // Remplir l'écran en noir (couleur RGB)
-    ecran.translate(0, -90, 50); // Position derrière le clavier
+    // Écran
+    ecran = monCube(200, 100, 15, texture_noire);
+    ecran.setFill(color(0));
+    ecran.translate(0, screenY, 50);
     table.addChild(ecran);
 
     // Face pour l'écran d'acceuil (rectangulaire)
-    PShape ecranAcc = createShape();
+    ecranAcc = createShape();
     ecranAcc.beginShape(QUADS);
     float largeurEcran = -200; // Largeur de l'écran
     float hauteurEcran = 90; // Hauteur de l'écran
@@ -81,12 +87,12 @@ public class Table {
     table.addChild(support);
 
     // Création de la partie haute de l'écran
-    PShape partieHaut = monCube(250, 20, 50, texture_surface);
+    partieHaut = monCube(250, 20, 50, texture_surface);
     partieHaut.translate(0, -170, 50); // Position sur le haut de l'écran
     table.addChild(partieHaut);
 
     // Création du support de la partie haute
-    PShape supportHaut = monCube(50, 160, 15, texture_noire);
+    supportHaut = monCube(50, 160, 15, texture_noire);
     supportHaut.translate(0, -100, 65); // Position sous l'écran
     table.addChild(supportHaut);
 
@@ -191,4 +197,23 @@ public class Table {
     public void toggleScreen() {
     isScreenVisible = !isScreenVisible;
   }
+   public void updateScreen() {
+    float targetY = isScreenVisible ? -90 : 260; // Position ouverte ou rangée
+    if (screenGroupY != targetY) {
+        screenGroupY = lerp(screenGroupY, targetY, 0.1); // Animation fluide
+
+        ecran.resetMatrix();
+        ecran.translate(0, screenGroupY, 50);
+
+        ecranAcc.resetMatrix();
+        ecranAcc.translate(0, screenGroupY, 40);
+
+        partieHaut.resetMatrix();
+        partieHaut.translate(0, screenGroupY - 80, 50);
+
+        supportHaut.resetMatrix();
+        supportHaut.translate(0, screenGroupY - 10, 65);
+    }
+}
+
 }

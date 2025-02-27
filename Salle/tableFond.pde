@@ -73,10 +73,10 @@ public class tableFond  {
                 face.normal(0, 1, 0); face.vertex(-x, y, z, 0, 1);
                 break;
             case 3: // Face haut
-                 face.normal(-1, -1, 0); face.vertex(-x, -y, -z, 0, 0);
-                face.normal(-1, -1, 0); face.vertex(-x, -y, z, 1, 0);
-                face.normal(1, -1, 0); face.vertex(x, -y, z, 1, 1);
-                face.normal(1, -1, 0); face.vertex(x, -y, -z, 0, 1);
+                 face.normal(0, -1, 0); face.vertex(-x, -y, -z, 0, 0);
+                face.normal(0, -1, 0); face.vertex(-x, -y, z, 1, 0);
+                face.normal(0, -1, 0); face.vertex(x, -y, z, 1, 1);
+                face.normal(0, -1, 0); face.vertex(x, -y, -z, 0, 1);
                 break;
             case 4: // Face devant
                 face.normal(0, 0, 1); face.vertex(-x, -y, z, 0, 0);

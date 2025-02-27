@@ -6,10 +6,12 @@ PShape formebureauProf;
 PShape groupeTables;
 PShape formeChaiseProf;
 Chaise chaiseProf;
+Table[][] MesTables;  // Liste pour stocker les objets Table
 Tele tele;
 tableFond tableFond;
 tableFond bureauProf;
-LumierePlafond lampe;
+LumierePlafond lampeTableau;
+LumierePlafond lampeCentrale;
 
 
 
@@ -30,15 +32,16 @@ PImage tex_fenetre;
 PImage textureLumiere;
 
 //Shader
-PShader colorShader;
-PShader lightShader;
 PShader lightShaderTex;
 
 //Position des lumières
 PVector[] lightPos = {
-  new PVector(0, -hauteur/2 + 100, 0), // Lumière qui passe dynamiquement autour de la salle
-  new PVector(-250, -hauteur/3, longueur/2-100) // Lumière qui eclaire le tableau
+  //new PVector(0, -hauteur/2 + 100, 0), // Lumière qui passe dynamiquement autour de la salle
+  new PVector(-250, -hauteur/3, longueur/2-100), // Lumière qui eclaire le tableau
+  new PVector(0, -hauteur/2+50, 0) // Lumiere plafond
 };
+
+
 
 // Position de la caméra
 PVector cameraPos = new PVector(0, 0, -500);
@@ -63,6 +66,8 @@ color[] couleurs = {
 
 void setup() {
   size(600, 600, P3D);
+  int rows = 5; // Nombre de rangées
+  int cols = 6; // Nombre de colonnes
   tex_pied = loadImage("texture_pied.jpg");
   tex_porte = loadImage("texture_porte.jpg");
   tex_wall = loadImage("texture_wall.jpg");
@@ -86,33 +91,36 @@ void setup() {
 
   tele = new Tele();
   //Lumière plafond
-  lampe = new LumierePlafond(lightPos[1].x, lightPos[1].y, lightPos[1].z, textureLumiere);
+  lampeTableau = new LumierePlafond(lightPos[0].x, lightPos[0].y, lightPos[0].z, textureLumiere);
+  lampeCentrale = new LumierePlafond(lightPos[1].x, lightPos[1].y, lightPos[1].z, textureLumiere);
   maTele = tele.getShape();
-  colorShader = loadShader("ColorShaderFrag.glsl", "ColorShaderVert.glsl");
-  lightShader = loadShader("Lambert1DiffuseFrag.glsl", "Lambert1DiffuseVert.glsl");
   lightShaderTex = loadShader("LightShaderTexFrag.glsl", "LightShaderTexVert.glsl");
 
   //Tables
+  MesTables = new Table[rows][cols];
   groupeTables = createShape(GROUP);
   float espacementZ = 700;
-  for (int i = 0; i < 5; ++i) {
+  for (int i = 0; i < rows; ++i) {
     float espacementX = 0;
-    for (int j = 0; j < 6; ++j) {
+    for (int j = 0; j < cols; ++j) {
       Chaise chaise = new Chaise();
-      Table table = new Table();
-      PShape formeTable = table.getShape();
+      MesTables[i][j] = new Table();  // Créer une nouvelle table
+
+      PShape formeTable = MesTables[i][j].getShape();
       PShape formeChaise = chaise.getShape();
+
       formeTable.scale(2.10);
       formeChaise.scale(1.20);
       formeTable.translate(espacementX, hauteur / 2 - 400, espacementZ);
-      formeChaise.translate(espacementX, hauteur / 2 - 200, espacementZ-350);
+      formeChaise.translate(espacementX, hauteur / 2 - 200, espacementZ - 350);
+
       groupeTables.addChild(formeTable);
       groupeTables.addChild(formeChaise);
+
       espacementX += 650;
     }
     espacementZ += 1000;
   }
-
 
   if (tex_porte == null) {
     println("Erreur : Impossible de charger texture_porte.jpg");
@@ -155,14 +163,8 @@ void setup() {
   } else {
     println("texture_porte.jpg chargée avec succès !");
   }
-  if (lightShader == null) {
-    println("Erreur : Impossible de charger le lightShader");
-  } else {
-    println("lightShader chargée avec succès !");
-  }
-
   float fov = PI/3;
-  float cameraZ = (height/2.0) / tan(fov/2.0);
+  //float cameraZ = (height/2.0) / tan(fov/2.0);
   perspective(fov, float(width)/float(height), 10, 200000);
 }
 
@@ -180,22 +182,27 @@ void draw() {
   }
 
   // Calcul de la position de la lumière au-dessus
-  lightPos[0].x = longueur / 5 * cos(angleLumiere);  // Mouvement circulaire
-  lightPos[0].y = largeur / 5 * sin(angleLumiere);
-  lightPos[0].z =  0;
+  //lightPos[0].x = longueur / 5 * cos(angleLumiere);  // Mouvement circulaire
+  //lightPos[0].y = largeur / 5 * sin(angleLumiere);
+  //lightPos[0].z =  0;
+  lampeTableau.afficher();
+  lampeCentrale.afficher();
 
-  shader(lightShaderTex);
+
+
   //pointLight(255, 255, 255, lightPos[0].x, lightPos[0].y, lightPos[0].z);
-    // Si allumer est vrai, on allume les lumières
-  if (allume) {
+  // Si allumer est vrai, on allume les lumières
+  shader(lightShaderTex);
+  if (allume) { // Message en bleu pour dire qu'il n'y a pas de lumière
     for (int i = 0; i < lightPos.length; i++) {
       pointLight(255, 255, 255, lightPos[i].x, lightPos[i].y, lightPos[i].z);
-    }
-  }
+      specular(255, 255, 255); // Reflet blanc pour la brillance
+      shininess(255);
+    } 
+  } else ambientLight(100, 100, 100);
 
-  specular(255, 255, 255); // Reflet blanc pour la brillance
-  shininess(255);           // Concentration du reflet
-  ambientLight(50, 50, 50);
+
+ 
   shape(salle); // Afficher la boîte
 
   // Dessiner la boîte autour de la table
@@ -213,17 +220,20 @@ void draw() {
   //shader(colorShader);
   shape(maTele); // télé arc en ciel : shader du cours utiliser sur le modèle de couleur
   resetShader();
+  ambientLight(100,100,100); 
   popMatrix();
 
   // transformation tables
   pushMatrix();
   translate(-2600, -100, -3000);
+  // Mettre à jour l'animation des écrans pour chaque table
+  for (int i = 0; i < MesTables.length; i++) {
+    for (int j = 0; j < MesTables[i].length; j++) {
+      MesTables[i][j].updateScreen();
+    }
+  }
   shape(groupeTables);
   popMatrix();
-
-  lampe.afficher();
-
-
 
   // Table de fond
   pushMatrix();
@@ -538,4 +548,18 @@ void drawRepere() {
 
   // Remet la couleur à l'état initial
   noStroke();
+}
+
+void keyPressed() {
+  // Lever les ordi et descendre
+  if (key == 't') {
+    for (int i = 0; i < MesTables.length; i++) {
+      for (int j = 0; j < MesTables[i].length; j++) {
+        MesTables[i][j].toggleScreen();
+      }
+    }
+  }
+  if (key == 'a' || key == 'A') {
+    allume = !allume;
+  }
 }
